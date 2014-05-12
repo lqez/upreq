@@ -13,7 +13,7 @@ parser.set_defaults(add_new=False)
 
 PACKAGE_RULES = {
     'pip': {
-        'pattern': r'(?P<package>\w+)==(?P<version>.+)',
+        'pattern': r'(?P<package>[^=]+)==(?P<version>.+)',
         'output': '{package}=={version}',
     },
     'egg': {
@@ -48,7 +48,7 @@ def upreq(args):
                 package = packages.get(m.group('package'))
                 if package:
                     version = package.get('version')
-                    if version and version > m.group('version'):
+                    if version and version < m.group('version'):
                         package['version'] = m.group('version')
                         print('[UPDATE] {package} to {version}'.format(**m.groupdict()))
 
